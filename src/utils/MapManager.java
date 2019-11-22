@@ -1,7 +1,5 @@
 package utils;
 
-import com.sun.javafx.collections.MapAdapterChange;
-
 import entities.Ant;
 import entities.Fighter;
 import entities.Worker;
@@ -21,8 +19,16 @@ public class MapManager {
     public static MapManager getInstance() {
         return singletonInstance;
     }
+    
+    public static String[][] getMap() {
+		return map;
+	}
 
-    public static String[][] initMap(int width, int height) {
+	public static void setMap(String[][] map) {
+		MapManager.map = map;
+	}
+
+	public static void initMap(int width, int height) {
         map = new String[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -33,11 +39,9 @@ public class MapManager {
                 }
             }
         }
-
-        return map;
     }
 
-    public static void drawMap(String map[][], int w, int h) {
+    public static void drawMap(int w, int h) {
 
         for (int i = 0; i < w; i++) {
 
@@ -60,7 +64,7 @@ public class MapManager {
 
     }
 
-    public static boolean isEmpty(String map[][], int x, int y) {
+    public static boolean isEmpty(int x, int y) {
         return map[x][y] == "";
     }
 

@@ -1,5 +1,3 @@
-import java.nio.charset.Charset;
-import java.util.Random;
 import java.util.Scanner;
 
 import entities.Ant;
@@ -15,45 +13,47 @@ public class Application {
 	
 	public static void main(String[] args) {
 		MapSize mapSize = createMapSize();
+		int w = mapSize.getWidth();
+		int h = mapSize.getHeight();
 		MapManager mapManager = MapManager.getInstance();
-		String [][] map = mapManager.initMap(mapSize.getWidth(), mapSize.getHeight());
+		mapManager.initMap(w, h);
 
 
 		
 		//create queens set his params
 		Queen q1 = (Queen) Ant.createAnt(0);
 		q1.x = q1.y = 1;
-		q1.ants = q1.giveBirth();
+		q1.giveBirth();
 		
 		Queen q2 = (Queen) Ant.createAnt(0);
 		q2.x = w-2; q2.y = h-2;
-		q2.ants = q2.giveBirth();
+		q2.giveBirth();
 		
 		newLine();
 		
 		System.out.println("Reine posX:"+q1.x+" posY:"+q1.y+" id:"+q1.id);
 		
 		//update map with queen posX & Y then re-draw the map
-		map[q1.x][q1.y] = "q1";
-		map[q2.x][q2.y] = "q2";
+		mapManager.getMap()[q1.x][q1.y] = "q1";
+		mapManager.getMap()[q2.x][q2.y] = "q2";
 		System.out.println("Map after set queen position");
-		mapManager.drawMap(map, w, h);
+		mapManager.drawMap(w, h);
 		
 		//set pos of children:
 		int y = q1.y;
-		for(Ant children: q1.ants) {
-			map[q1.x][y+=1] = mapManager.printAntOnMap(children);
+		for(Ant children: q1.getAnts()) {
+			mapManager.getMap()[q1.x][y+=1] = mapManager.printAntOnMap(children);
 		}
 		
 		y = q2.y;
-		for (Ant children: q2.ants) {
-			map[q2.x][y -= 1] = mapManager.printAntOnMap(children);
+		for (Ant children: q2.getAnts()) {
+			mapManager.getMap()[q2.x][y -= 1] = mapManager.printAntOnMap(children);
 		}
 		System.out.println("Map after set queen children pos:");
-		mapManager.drawMap(map, w, h);
+		mapManager.drawMap(w, h);
 		
 		//simulation loop:
-		if(mapManager.isEmpty(map, q1.x, q1.y))
+		if(mapManager.isEmpty(q1.x, q1.y))
 		{
 			System.out.print("this space is full");
 		}else {
